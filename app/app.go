@@ -2,6 +2,8 @@ package app
 
 import "fmt"
 
-func App() {
-	fmt.Print("HELLO WORLD")
+func Start() {
+	fmt.Println("HELLO WORLD 2")
+	ConfigInit()
+	fmt.Println(AppConfig.Test)
 }

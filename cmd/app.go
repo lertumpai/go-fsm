@@ -9,6 +9,6 @@ var appCmd = &cobra.Command{
 	Use:   "app",
 	Short: "start application",
 	Run: func(cmd *cobra.Command, args []string) {
-		app.App()
+		app.Start()
 	},
 }
