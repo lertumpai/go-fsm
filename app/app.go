@@ -4,7 +4,6 @@ import "go-fsm/state/manager"
 
 func Start() {
 	ConfigInit()
-	m := manager.CreateManager()
-	m.Init()
+	m := manager.CreateManager().Init()
 	m.FireProcessing()
 }

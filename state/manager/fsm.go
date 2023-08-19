@@ -1,8 +1,6 @@
 package manager
 
 import (
-	"context"
-	"fmt"
 	"github.com/qmuntal/stateless"
 )
 
@@ -16,7 +14,7 @@ func CreateManager() *Manager {
 	}
 }
 
-func (m *Manager) Init() {
+func (m *Manager) Init() *Manager {
 	state := stateless.NewStateMachine(StateStart)
 
 	// Initialize main state
@@ -24,54 +22,15 @@ func (m *Manager) Init() {
 		Permit(EventStart, StateIdle)
 
 	state.Configure(StateIdle).
-		OnEntry(m.StateIdle).
+		OnEntry(m.stateIdle).
 		Permit(EventStartBackup, StateProcessing)
 
 	state.Configure(StateProcessing).
-		OnEntry(m.StateProcessing).
+		OnEntry(m.stateProcessing).
 		Permit(EventFinishBackup, StateIdle)
 
 	m.state = state
 	m.FireIdle()
-}
 
-func (m *Manager) StateStart(ctx context.Context, args ...any) error {
-	fmt.Println("current:", StateStart)
-	return nil
-}
-
-func (m *Manager) StateIdle(ctx context.Context, args ...any) error {
-	fmt.Println("current:", StateIdle)
-	return nil
-}
-
-func (m *Manager) StateProcessing(ctx context.Context, args ...any) error {
-	fmt.Println("current:", StateProcessing)
-	fmt.Println("start processing...")
-	fmt.Println("finish processing...")
-	// TODO: call 'fsm task' and waiting channel
-	m.state.Fire(EventFinishBackup)
-	return nil
-}
-
-func (m *Manager) PrintGraph() {
-	graph := m.state.ToGraph()
-	fmt.Println("Manager graph")
-	fmt.Println(graph)
-}
-
-func (m *Manager) FireIdle() {
-	err := m.state.Fire(EventStart)
-	if err != nil {
-		fmt.Println("cannot fire idle")
-		fmt.Println("current state is", m.state.MustState())
-	}
-}
-
-func (m *Manager) FireProcessing() {
-	err := m.state.Fire(EventStartBackup)
-	if err != nil {
-		fmt.Println("cannot fire processing")
-		fmt.Println("current state is", m.state.MustState())
-	}
+	return m
 }

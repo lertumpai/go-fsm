@@ -1,4 +1,4 @@
-package manager
+package backup
 
 const (
 	StateIdle       = "StateIdle"

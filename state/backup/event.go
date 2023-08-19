@@ -1,7 +1,7 @@
-package manager
+package backup
 
 const (
-	EventStart         = "Start"
+	EventStartBackup   = "StartBackup"
 	EventFinishExtract = "FinishExtract"
 	EventFinishUpload  = "FinishExtract"
 	EventFinishBackup  = "FinishBackup"
