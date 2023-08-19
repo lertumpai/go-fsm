@@ -1,8 +1,10 @@
 package app
 
+import "go-fsm/app/state/manager"
+
 func Start() {
 	ConfigInit()
-	manager := CreateManager()
-	manager.Init()
-	manager.FireProcessing()
+	m := manager.CreateManager()
+	m.Init()
+	m.FireProcessing()
 }
