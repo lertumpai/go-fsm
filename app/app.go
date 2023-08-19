@@ -1,6 +1,6 @@
 package app
 
-import "go-fsm/app/state/manager"
+import "go-fsm/state/manager"
 
 func Start() {
 	ConfigInit()
