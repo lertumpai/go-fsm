@@ -3,3 +3,6 @@ build-cmd:
 
 run:
 	./main app
+
+build-and-run:
+	make build-cmd && make run
