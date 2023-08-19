@@ -1,7 +1,7 @@
 package manager
 
 const (
-	EventStartService = "StartService"
+	EventStart        = "Start"
 	EventStartBackup  = "StartBackup"
 	EventFinishBackup = "FinishBackup"
 )

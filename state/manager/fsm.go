@@ -21,7 +21,7 @@ func (m *Manager) Init() {
 
 	// Initialize main state
 	state.Configure(StateStart).
-		Permit(EventStartService, StateIdle)
+		Permit(EventStart, StateIdle)
 
 	state.Configure(StateIdle).
 		OnEntry(m.StateIdle).
@@ -61,7 +61,7 @@ func (m *Manager) PrintGraph() {
 }
 
 func (m *Manager) FireIdle() {
-	err := m.state.Fire(EventStartService)
+	err := m.state.Fire(EventStart)
 	if err != nil {
 		fmt.Println("cannot fire idle")
 		fmt.Println("current state is", m.state.MustState())

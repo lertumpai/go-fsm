@@ -1,7 +1,7 @@
 package manager
 
 const (
-	StateStart      = "StateAppStart"
-	StateIdle       = "StateAppIdle"
+	StateStart      = "StateStart"
+	StateIdle       = "StateIdle"
 	StateProcessing = "StateProcessing"
 )
