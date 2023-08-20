@@ -31,10 +31,8 @@ func (b *Backup) Init() *Backup {
 		Permit(EventFinishUpload, StateFinish)
 
 	state.Configure(StateFinish).
-		OnEntry(b.stateFinish).
-		Permit(EventFinishBackup, StateIdle)
+		OnEntry(b.stateFinish)
 
 	b.state = state
-
 	return b
 }

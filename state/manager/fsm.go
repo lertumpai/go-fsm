@@ -29,8 +29,7 @@ func (m *Manager) Init() *Manager {
 		OnEntry(m.stateProcessing).
 		Permit(EventFinishBackup, StateIdle)
 
+	state.Fire(EventStart)
 	m.state = state
-	m.FireIdle()
-
 	return m
 }

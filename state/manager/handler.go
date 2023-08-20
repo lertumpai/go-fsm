@@ -25,18 +25,18 @@ func (m *Manager) PrintGraph() {
 	fmt.Println(graph)
 }
 
-func (m *Manager) FireIdle() {
-	err := m.state.Fire(EventStart)
+func (m *Manager) FireEventFinishBackup() {
+	err := m.state.Fire(EventFinishBackup)
 	if err != nil {
-		fmt.Println("cannot fire idle")
+		fmt.Println("cannot fire EventFinishBackup")
 		fmt.Println("current state is", m.state.MustState())
 	}
 }
 
-func (m *Manager) FireProcessing() {
+func (m *Manager) FireEventStartBackup() {
 	err := m.state.Fire(EventStartBackup)
 	if err != nil {
-		fmt.Println("cannot fire processing")
+		fmt.Println("cannot fire EventStartBackup")
 		fmt.Println("current state is", m.state.MustState())
 	}
 }
