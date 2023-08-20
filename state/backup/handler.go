@@ -25,7 +25,7 @@ func (b *Backup) stateFinish(ctx context.Context, args ...any) error {
 	return nil
 }
 
-func (b *Backup) FireEventEventStartBackup() {
+func (b *Backup) FireEventStartBackup() {
 	err := b.state.Fire(EventStartBackup)
 	if err != nil {
 		fmt.Println("cannot fire EventStartBackup")
@@ -33,7 +33,7 @@ func (b *Backup) FireEventEventStartBackup() {
 	}
 }
 
-func (b *Backup) FireEventEventFinishExtract() {
+func (b *Backup) FireEventFinishExtract() {
 	err := b.state.Fire(EventFinishExtract)
 	if err != nil {
 		fmt.Println("cannot fire EventFinishExtract")
@@ -55,4 +55,10 @@ func (b *Backup) FireEventFinishBackup() {
 		fmt.Println("cannot fire EventFinishBackup")
 		fmt.Println("current state is", b.state.MustState())
 	}
+}
+
+func (b *Backup) PrintGraph() {
+	graph := b.state.ToGraph()
+	fmt.Println("Backup graph")
+	fmt.Println(graph)
 }

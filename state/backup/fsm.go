@@ -19,7 +19,6 @@ func (b *Backup) Init() *Backup {
 
 	// Initialize main state
 	state.Configure(StateIdle).
-		OnEntry(b.stateIdle).
 		Permit(EventStartBackup, StateExtracting)
 
 	state.Configure(StateExtracting).

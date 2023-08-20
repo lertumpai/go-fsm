@@ -3,6 +3,6 @@ package backup
 const (
 	EventStartBackup   = "StartBackup"
 	EventFinishExtract = "FinishExtract"
-	EventFinishUpload  = "FinishExtract"
+	EventFinishUpload  = "FinishUpload"
 	EventFinishBackup  = "FinishBackup"
 )

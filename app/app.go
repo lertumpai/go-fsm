@@ -1,9 +1,14 @@
 package app
 
-import "go-fsm/state/manager"
+import (
+	"go-fsm/state/backup"
+)
 
 func Start() {
 	ConfigInit()
-	m := manager.CreateManager().Init()
-	m.FireProcessing()
+	b := backup.CreateBackup().Init()
+	b.FireEventStartBackup()
+	b.FireEventFinishExtract()
+	b.FireEventFinishUpload()
+	b.PrintGraph()
 }
