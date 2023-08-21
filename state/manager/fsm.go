@@ -2,15 +2,22 @@ package manager
 
 import (
 	"github.com/qmuntal/stateless"
+	"go-fsm/state/backup"
 )
 
 type Manager struct {
-	state *stateless.StateMachine
+	state  *stateless.StateMachine
+	backup *backup.Backup
 }
 
-func CreateManager() *Manager {
+type Config struct {
+	Backup *backup.Backup
+}
+
+func Create(config Config) *Manager {
 	return &Manager{
-		state: nil,
+		state:  nil,
+		backup: config.Backup,
 	}
 }
 

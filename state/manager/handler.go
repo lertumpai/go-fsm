@@ -6,15 +6,14 @@ import (
 )
 
 func (m *Manager) stateIdle(ctx context.Context, args ...any) error {
-	fmt.Println("current:", StateIdle)
+	fmt.Println("manager:", StateIdle)
 	return nil
 }
 
 func (m *Manager) stateProcessing(ctx context.Context, args ...any) error {
-	fmt.Println("current:", StateProcessing)
+	fmt.Println("manager:", StateProcessing)
 	fmt.Println("start processing...")
-	// TODO: call 'fsm task' and waiting channel
-	fmt.Println("finish processing...")
+	m.backup.FireEventStartBackup("message eiei")
 	m.state.Fire(EventFinishBackup)
 	return nil
 }
@@ -28,15 +27,15 @@ func (m *Manager) PrintGraph() {
 func (m *Manager) FireEventFinishBackup() {
 	err := m.state.Fire(EventFinishBackup)
 	if err != nil {
-		fmt.Println("cannot fire EventFinishBackup")
-		fmt.Println("current state is", m.state.MustState())
+		fmt.Println("manager: cannot fire EventFinishBackup")
+		fmt.Println("manager: current state is", m.state.MustState())
 	}
 }
 
 func (m *Manager) FireEventStartBackup() {
 	err := m.state.Fire(EventStartBackup)
 	if err != nil {
-		fmt.Println("cannot fire EventStartBackup")
-		fmt.Println("current state is", m.state.MustState())
+		fmt.Println("manager: cannot fire EventStartBackup")
+		fmt.Println("manager: current state is", m.state.MustState())
 	}
 }

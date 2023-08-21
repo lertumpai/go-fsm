@@ -5,12 +5,14 @@ import (
 )
 
 type Backup struct {
-	state *stateless.StateMachine
+	state    *stateless.StateMachine
+	response chan string
 }
 
-func CreateBackup() *Backup {
+func Create() *Backup {
 	return &Backup{
-		state: nil,
+		state:    nil,
+		response: nil,
 	}
 }
 
@@ -30,7 +32,8 @@ func (b *Backup) Init() *Backup {
 		Permit(EventFinishUpload, StateFinish)
 
 	state.Configure(StateFinish).
-		OnEntry(b.stateFinish)
+		OnEntry(b.stateFinish).
+		Permit(EventFinishBackup, StateIdle)
 
 	b.state = state
 	return b
