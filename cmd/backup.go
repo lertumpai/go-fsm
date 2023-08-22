@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"time"
 )
 
 func main() {
@@ -17,7 +18,7 @@ func main() {
 	mysqldumpPath := "mysqldump" // Use the actual path if it's different
 
 	// Output file for the dump
-	outputFile := "backup.sql"
+	outputFile := "./backup-" + time.Now().Format(time.RFC3339) + ".sql"
 
 	// Construct the command
 	cmd := exec.Command(mysqldumpPath, "--host="+dbHost, "--user="+dbUsername, "--password="+dbPassword, dbName)
