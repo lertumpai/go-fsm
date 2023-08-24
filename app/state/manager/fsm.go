@@ -2,7 +2,7 @@ package manager
 
 import (
 	"github.com/qmuntal/stateless"
-	"go-fsm/state/backup"
+	"go-fsm/app/state/backup"
 )
 
 type Manager struct {

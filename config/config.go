@@ -1,4 +1,4 @@
-package app
+package config
 
 import (
 	"github.com/ilyakaznacheev/cleanenv"
@@ -14,7 +14,7 @@ type Config struct {
 
 var AppConfig Config
 
-func ConfigInit() {
+func Load() {
 	if err := cleanenv.ReadConfig("config/config.yml", &AppConfig); err != nil {
 		log.Fatalf("Error loading configuration: %v", err)
 	}

@@ -3,6 +3,10 @@ package backup
 import (
 	"context"
 	"fmt"
+	"go-fsm/config"
+	"os"
+	"os/exec"
+	"time"
 )
 
 func (b *Backup) stateIdle(ctx context.Context, args ...any) error {
@@ -12,6 +16,32 @@ func (b *Backup) stateIdle(ctx context.Context, args ...any) error {
 
 func (b *Backup) stateExtracting(ctx context.Context, args ...any) error {
 	fmt.Println("backup:", StateExtracting)
+	// Path to mysqldump executable
+	mysqldumpPath := "mysqldump" // Use the actual path if it's different
+
+	// Output file for the dump
+	outputFile := "./backup-" + time.Now().Format(time.RFC3339) + ".sql"
+
+	// Construct the command
+	cmd := exec.Command(mysqldumpPath, "--host="+config.AppConfig.DbHost, "--user="+config.AppConfig.DbUsername, "--password="+config.AppConfig.DbPassword, config.AppConfig.DbName)
+
+	// Create the output file
+	file, err := os.Create(outputFile)
+	if err != nil {
+		fmt.Println("Error creating output file:", err)
+	}
+	defer file.Close()
+
+	// Set the command's stdout to the output file
+	cmd.Stdout = file
+
+	// Run the command
+	err = cmd.Run()
+	if err != nil {
+		fmt.Println("Error running mysqldump:", err)
+	}
+
+	fmt.Println("Database dump completed successfully.")
 	b.FireEventFinishExtract()
 	return nil
 }
