@@ -16,11 +16,20 @@ func (b *Backup) stateIdle(ctx context.Context, args ...any) error {
 
 func (b *Backup) stateExtracting(ctx context.Context, args ...any) error {
 	fmt.Println("backup:", StateExtracting)
-	// Path to mysqldump executable
-	mysqldumpPath := "mysqldump" // Use the actual path if it's different
+
+	folderPath := "mysql-backup"
+
+	// Create the folder (forcefully) and any necessary parent folders
+	err := os.MkdirAll(folderPath, 0755)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 
 	// Output file for the dump
-	outputFile := "./backup-" + time.Now().Format(time.RFC3339) + ".sql"
+	outputFile := fmt.Sprintf("./%s/%s.sql", folderPath, time.Now().Format(time.RFC3339))
+
+	// Path to mysqldump executable
+	mysqldumpPath := "mysqldump" // Use the actual path if it's different
 
 	// Construct the command
 	cmd := exec.Command(mysqldumpPath, "--host="+config.AppConfig.DbHost, "--user="+config.AppConfig.DbUsername, "--password="+config.AppConfig.DbPassword, config.AppConfig.DbName)
@@ -42,18 +51,31 @@ func (b *Backup) stateExtracting(ctx context.Context, args ...any) error {
 	}
 
 	fmt.Println("Database dump completed successfully.")
-	b.FireEventFinishExtract()
+	b.FireEventFinishExtract(outputFile)
 	return nil
 }
 
 func (b *Backup) stateUploading(ctx context.Context, args ...any) error {
 	fmt.Println("backup:", StateUploading)
-	b.FireEventFinishUpload()
+
+	fileName := args[0].(string)
+	fmt.Println("Start backup file", fileName)
+
+	b.FireEventFinishUpload(fileName)
 	return nil
 }
 
 func (b *Backup) stateFinish(ctx context.Context, args ...any) error {
 	fmt.Println("backup:", StateFinish)
+	fmt.Println("backup: cleanup file")
+
+	fileName := args[0].(string)
+	fmt.Println("backup: removing file", fileName)
+	err := os.Remove(fileName)
+	if err != nil {
+		fmt.Println("Error removing file:", err)
+	}
+
 	b.FireEventFinishBackup()
 	return nil
 }
@@ -67,18 +89,18 @@ func (b *Backup) FireEventStartBackup(msg string) {
 	}
 }
 
-func (b *Backup) FireEventFinishExtract() {
+func (b *Backup) FireEventFinishExtract(outputFile string) {
 	fmt.Println("backup: finish extract")
-	err := b.state.Fire(EventFinishExtract)
+	err := b.state.Fire(EventFinishExtract, outputFile)
 	if err != nil {
 		fmt.Println("backup: cannot fire EventFinishExtract")
 		fmt.Println("backup: current state is", b.state.MustState())
 	}
 }
 
-func (b *Backup) FireEventFinishUpload() {
+func (b *Backup) FireEventFinishUpload(fileName string) {
 	fmt.Println("backup: finish upload")
-	err := b.state.Fire(EventFinishUpload)
+	err := b.state.Fire(EventFinishUpload, fileName)
 	if err != nil {
 		fmt.Println("backup: cannot fire EventFinishUpload")
 		fmt.Println("backup: current state is", b.state.MustState())
