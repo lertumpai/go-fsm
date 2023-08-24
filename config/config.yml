@@ -1,1 +1,4 @@
-test: "Hello"
+db-host: "localhost"
+db-username: "root"
+db-password: "root"
+db-name: "my_database"

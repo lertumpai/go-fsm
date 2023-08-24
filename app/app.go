@@ -2,8 +2,8 @@ package app
 
 import (
 	"fmt"
-	"go-fsm/state/backup"
-	"go-fsm/state/manager"
+	"go-fsm/app/state/backup"
+	"go-fsm/app/state/manager"
 )
 
 func Start() {

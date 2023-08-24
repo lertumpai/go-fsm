@@ -6,7 +6,10 @@ import (
 )
 
 type Config struct {
-	Test string `yaml:"test" env-default:"test"`
+	DbHost     string `yaml:"db-host"`
+	DbUsername string `yaml:"db-username"`
+	DbPassword string `yaml:"db-password"`
+	DbName     string `yaml:"db-name"`
 }
 
 var AppConfig Config
