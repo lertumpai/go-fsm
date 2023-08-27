@@ -59,8 +59,8 @@ func (b *Backup) stateUploading(ctx context.Context, args ...any) error {
 	fmt.Println("backup:", StateUploading)
 
 	fileName := args[0].(string)
-	fmt.Println("Start backup file", fileName)
-
+	fmt.Println("Start upload file", fileName)
+	// TODO: implement s3 upload file
 	b.FireEventFinishUpload(fileName)
 	return nil
 }
